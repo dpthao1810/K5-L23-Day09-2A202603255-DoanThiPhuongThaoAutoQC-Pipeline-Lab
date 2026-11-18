@@ -19,6 +19,72 @@ Trả về dict: decision, n_errors, n_warn_images, n_images, warn_ratio (làm t
 from ..common import ERROR, WARN  # noqa: F401
 
 
+
 def decide(issues, image_stems, cfg, reviewed=frozenset()):
-    # TODO
-    raise NotImplementedError("gate chưa làm")
+    # Chuyển danh sách ảnh và ảnh đã duyệt thành set
+    image_stems = set(image_stems)
+    reviewed = set(reviewed)
+
+    # Đếm số lỗi ERROR
+    # Lỗi ERROR luôn được tính, kể cả khi ảnh đã được duyệt
+    n_errors = sum(
+        1 for issue in issues
+        if issue.severity == ERROR
+    )
+
+    # Tập hợp các ảnh có ít nhất một cảnh báo WARN
+    # Chỉ tính ảnh thuộc dataset và chưa được duyệt
+    warn_images = {
+        issue.image
+        for issue in issues
+        if issue.severity == WARN
+        and issue.image in image_stems
+        and issue.image not in reviewed
+    }
+
+    # Đếm số ảnh cảnh báo, không đếm số issue
+    n_warn_images = len(warn_images)
+    n_images = len(image_stems)
+
+    # Tính tỷ lệ cảnh báo, tránh chia cho 0
+    if n_images > 0:
+        warn_ratio = n_warn_images / n_images
+    else:
+        warn_ratio = 0.0
+
+    # Làm tròn 4 chữ số
+    warn_ratio = round(warn_ratio, 4)
+
+    # Đọc ngưỡng Hold từ cấu hình
+    threshold = cfg["gate"]["warn_ratio_hold"]
+
+    # Ra quyết định
+    if n_errors > 0:
+        decision = "Rework"
+        reasons = [
+            f"Có {n_errors} lỗi bắt buộc (ERROR), cần sửa trước khi phát hành."
+        ]
+
+    elif warn_ratio >= threshold:
+        decision = "Hold"
+        reasons = [
+            f"Có {n_warn_images}/{n_images} ảnh còn cảnh báo chưa được duyệt "
+            f"(tỷ lệ {warn_ratio:.2%}), đạt hoặc vượt ngưỡng {threshold:.2%}."
+        ]
+
+    else:
+        decision = "Release"
+        reasons = [
+            f"Không còn lỗi bắt buộc; có {n_warn_images}/{n_images} ảnh "
+            f"còn cảnh báo chưa được duyệt (tỷ lệ {warn_ratio:.2%}), "
+            f"thấp hơn ngưỡng {threshold:.2%}."
+        ]
+
+    return {
+        "decision": decision,
+        "n_errors": n_errors,
+        "n_warn_images": n_warn_images,
+        "n_images": n_images,
+        "warn_ratio": warn_ratio,
+        "reasons": reasons,
+    }

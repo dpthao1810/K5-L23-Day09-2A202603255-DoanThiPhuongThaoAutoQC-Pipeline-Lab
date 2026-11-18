@@ -35,10 +35,207 @@ Gợi ý
 - `iou_xywh` có sẵn. Dòng nhãn hỏng không được làm script chết (dùng `ds.valid_boxes` và `parse_yolo_line` trong try).
 - Kết quả phụ thuộc mạnh vào ngưỡng: calibrate chúng ở Bước 3 thay vì đoán.
 """
-from ..common import WARN, Issue, iou_xywh, parse_yolo_line  # noqa: F401
-from ..model_cache import get_preds  # noqa: F401
+
+"""CHECK 6 — So sánh nhãn với dự đoán từ model lớn hơn."""
+
+from ..common import WARN, Issue, iou_xywh, parse_yolo_line
+from ..model_cache import get_preds
 
 
 def run(ds, cfg, preds=None):
-    # TODO
-    raise NotImplementedError("check second_opinion chưa làm")
+    if preds is None:
+        preds = get_preds(ds, cfg, "checker")
+
+    settings = cfg["second_opinion"]
+
+    conf_threshold = settings["conf"]
+    min_area_px = settings["min_area_px"]
+    fp_conf = settings["fp_conf"]
+    iou_missing = settings["iou_missing"]
+    iou_match = settings["iou_match"]
+    iou_loose = settings["iou_loose"]
+
+    issues = []
+
+    for image_path in ds.image_files():
+        stem = image_path.stem
+
+        # Bỏ qua ảnh không có dự đoán hoặc không có file nhãn.
+        if stem not in preds:
+            continue
+
+        label_lines = ds.read_label_lines(stem)
+
+        if label_lines is None:
+            continue
+
+        size = ds.image_size(stem)
+
+        if size is None:
+            continue
+
+        image_width, image_height = size
+
+        # Đọc nhãn hợp lệ và giữ lại số dòng gốc.
+        labels = []
+
+        for line_number, raw_line in label_lines:
+            try:
+                class_id, cx, cy, w, h = parse_yolo_line(raw_line)
+            except (ValueError, TypeError):
+                continue
+
+            if not (0 <= class_id < len(ds.classes)):
+                continue
+
+            labels.append({
+                "class_id": class_id,
+                "box": (cx, cy, w, h),
+                "line": line_number
+            })
+
+        # Dự đoán dùng để tìm nhãn thiếu, nhãn sai lớp, box lỏng.
+        selected_preds = []
+
+        for prediction in preds[stem]:
+            try:
+                class_id, conf, cx, cy, w, h = prediction
+                class_id = int(class_id)
+                conf = float(conf)
+                cx, cy, w, h = map(float, (cx, cy, w, h))
+            except (ValueError, TypeError):
+                continue
+
+            if not (0 <= class_id < len(ds.classes)):
+                continue
+
+            if conf < conf_threshold:
+                continue
+
+            area_px = (w * image_width) * (h * image_height)
+
+            if area_px < min_area_px:
+                continue
+
+            selected_preds.append({
+                "class_id": class_id,
+                "conf": conf,
+                "box": (cx, cy, w, h)
+            })
+
+        # 1. Kiểm tra từng dự đoán của model.
+        for prediction in selected_preds:
+            pred_class = prediction["class_id"]
+            pred_box = prediction["box"]
+            pred_conf = prediction["conf"]
+
+            candidates = []
+
+            for label in labels:
+                iou = iou_xywh(pred_box, label["box"])
+
+                if iou >= iou_missing:
+                    candidates.append({
+                        "class_id": label["class_id"],
+                        "iou": iou
+                    })
+
+            # Không có nhãn nào khớp với dự đoán.
+            if not candidates:
+                issues.append(Issue(
+                    check="second_opinion",
+                    severity=WARN,
+                    code="POSSIBLE_MISSING",
+                    image=stem,
+                    message="Model phát hiện vật thể chưa có nhãn tương ứng.",
+                    extra={"conf": pred_conf}
+                ))
+                continue
+
+            same_class = [
+                item for item in candidates
+                if item["class_id"] == pred_class
+            ]
+
+            other_class = [
+                item for item in candidates
+                if item["class_id"] != pred_class
+            ]
+
+            # Có nhãn cùng lớp: kiểm tra độ khớp của bounding box.
+            if same_class:
+                best_same = max(
+                    same_class,
+                    key=lambda item: item["iou"]
+                )
+
+                if best_same["iou"] < iou_loose:
+                    issues.append(Issue(
+                        check="second_opinion",
+                        severity=WARN,
+                        code="POSSIBLE_LOOSE_BOX",
+                        image=stem,
+                        message="Bounding box có thể bị lệch hoặc quá lỏng.",
+                        extra={"iou": best_same["iou"]}
+                    ))
+
+                # Đã có nhãn đúng lớp thì không xét nhầm lớp.
+                continue
+
+            # Không có nhãn cùng lớp: kiểm tra nhãn khác lớp.
+            if other_class:
+                best_other = max(
+                    other_class,
+                    key=lambda item: item["iou"]
+                )
+
+                if best_other["iou"] >= iou_match:
+                    issues.append(Issue(
+                        check="second_opinion",
+                        severity=WARN,
+                        code="POSSIBLE_WRONG_CLASS",
+                        image=stem,
+                        message="Nhãn có thể bị gán sai lớp.",
+                        extra={"iou": best_other["iou"]}
+                    ))
+
+        # 2. Kiểm tra nhãn có thể là false positive.
+        # Dùng fp_conf, không áp dụng min_area_px.
+        fp_predictions = []
+
+        for prediction in preds[stem]:
+            try:
+                class_id, conf, cx, cy, w, h = prediction
+                class_id = int(class_id)
+                conf = float(conf)
+                box = tuple(map(float, (cx, cy, w, h)))
+            except (ValueError, TypeError):
+                continue
+
+            if not (0 <= class_id < len(ds.classes)):
+                continue
+
+            if conf >= fp_conf:
+                fp_predictions.append(box)
+
+        for label in labels:
+            label_box = label["box"]
+
+            best_iou = 0.0
+
+            for pred_box in fp_predictions:
+                iou = iou_xywh(label_box, pred_box)
+                best_iou = max(best_iou, iou)
+
+            if best_iou < iou_missing:
+                issues.append(Issue(
+                    check="second_opinion",
+                    severity=WARN,
+                    code="POSSIBLE_FALSE_POS",
+                    image=stem,
+                    line=label["line"],
+                    message="Nhãn có thể không tương ứng với vật thể thực tế.",
+                    extra={"iou": best_iou}
+                ))
+
+    return issues
