@@ -1,0 +1,86 @@
+# Danh sách lỗi — SAU người duyệt (v3)
+ảnh đã quét: 193
+
+label_format -> 10 dòng
+missing_labels -> 3 dòng
+second_opinion -> 55 dòng
+
+[WARN ] BOX_HUGE             img_0018.txt:1  Bounding box chiếm diện tích quá lớn.
+[WARN ] BOX_HUGE             img_0128.txt:1  Bounding box chiếm diện tích quá lớn.
+[WARN ] BOX_HUGE             img_0196.txt:1  Bounding box chiếm diện tích quá lớn.
+[WARN ] BOX_TINY             img_0026.txt:6  Bounding box có cạnh ngắn quá nhỏ.
+[WARN ] BOX_TINY             img_0051.txt:5  Bounding box có cạnh ngắn quá nhỏ.
+[WARN ] BOX_TINY             img_0069.txt:2  Bounding box có cạnh ngắn quá nhỏ.
+[WARN ] BOX_TINY             img_0161.txt:2  Bounding box có cạnh ngắn quá nhỏ.
+[WARN ] BOX_TINY             img_0161.txt:3  Bounding box có cạnh ngắn quá nhỏ.
+[WARN ] BOX_TINY             img_0161.txt:4  Bounding box có cạnh ngắn quá nhỏ.
+[WARN ] BOX_TINY             img_0183.txt:11  Bounding box có cạnh ngắn quá nhỏ.
+[WARN ] EMPTY_LABEL          img_0097  file nhãn rỗng: ảnh nền hay thiếu nhãn?
+[WARN ] EMPTY_LABEL          img_0129  file nhãn rỗng: ảnh nền hay thiếu nhãn?
+[WARN ] EMPTY_LABEL          img_0192  file nhãn rỗng: ảnh nền hay thiếu nhãn?
+[WARN ] POSSIBLE_FALSE_POS   img_0014.txt:2  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0022.txt:2  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0035.txt:2  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0068.txt:8  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0069.txt:2  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0075.txt:6  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0091.txt:7  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0093.txt:3  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0095.txt:6  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0111.txt:2  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0124.txt:8  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0131.txt:11  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0134.txt:5  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0149.txt:3  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0150.txt:3  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0180.txt:5  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0189.txt:4  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0191.txt:1  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0206.txt:1  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_FALSE_POS   img_0212.txt:4  Nhãn có thể không tương ứng với vật thể thực tế.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0015  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0018  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0032  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0036  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0045  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0046  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0054  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0058  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0064  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0077  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0082  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0090  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0099  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0119  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0125  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0142  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0175  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0200  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0212  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0217  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_LOOSE_BOX   img_0217  Bounding box có thể bị lệch hoặc quá lỏng.
+[WARN ] POSSIBLE_MISSING     img_0062  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0121  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0126  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0127  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0127  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0135  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0159  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0160  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0183  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0199  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_MISSING     img_0220  Model phát hiện vật thể chưa có nhãn tương ứng.
+[WARN ] POSSIBLE_WRONG_CLASS img_0078  Nhãn có thể bị gán sai lớp.
+[WARN ] POSSIBLE_WRONG_CLASS img_0083  Nhãn có thể bị gán sai lớp.
+[WARN ] POSSIBLE_WRONG_CLASS img_0220  Nhãn có thể bị gán sai lớp.
+
+## Tổng hợp theo mã
+warn  BOX_HUGE               3
+warn  BOX_TINY               7
+warn  EMPTY_LABEL            3
+warn  POSSIBLE_FALSE_POS     20
+warn  POSSIBLE_LOOSE_BOX     21
+warn  POSSIBLE_MISSING       11
+warn  POSSIBLE_WRONG_CLASS   3
+
+Kết luận: HOLD — Có 34/193 ảnh còn cảnh báo chưa được duyệt (tỷ lệ 17.62%), đạt hoặc vượt ngưỡng 10.00%.

@@ -1,8 +1,8 @@
-<p align="center">
+﻿# Day 09 Lab — Doãn Thị Phương Thảo: 2A202603255 - Doãn Thị Phương Thảo
   <img src="docs/assets/hero.png" alt="Day 09 Lab: pipeline kiểm nhãn tự động" width="100%">
 </p>
 
-# Day 09 Lab — Pipeline kiểm nhãn tự động
+# Day 09 Lab — Doãn Thị Phương Thảo: 2A202603255 - Doãn Thị Phương Thảo
 
 <p align="center">
   <img alt="cá nhân" src="https://img.shields.io/badge/lab-cá%20nhân-0b1f3a">
@@ -96,3 +96,4 @@ Slide tham khảo: **Day 09 — Công cụ kiểm tự động & Pipeline cơ b�
 - Thí nghiệm train công bằng và **kết luận trung thực** khi chênh lệch nằm trong nhiễu.
 
 <sub>Hình trong `docs/assets/` do giảng viên vẽ bằng `docs/assets/make_figures.py`; ảnh mẫu từ COCO val2017 (CC BY 4.0).</sub>
+
